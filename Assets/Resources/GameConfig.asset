@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c345d39831c3f4fb1b8a3791cf4d91, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: Assembly-CSharp::GameConfig
+  horizontalSpeed: 3
+  initialNegative: 0
+  maxNegative: 10
+  fillDuration: 1
+  initialPlatformJumpForce: 6
+  platformJumpForce: 10
+  singlePlatformHeightOffset: 12
+  platformHorizontalOverflow: 0.3
+  destroyHeightThreshold: 2
+  cameraSmoothSpeed: 0.25
+  distanceUnit: m
+  centimetersPerUnit: 40
+  progressbarAcceleration: 2
+  progressbarDeceleration: 3
+  progressbarMaxSpeed: 5
+  progressbarSegmentSwitchBoost: 1.2
+  doubleJumpForce: 5
+  upDashForce: 17
+  sideDashSpeed: 7
+  sideDashTime: 0.5
+  screamForce: 1
+  screamRegenMultiplier: 1.5
+  screamRegenDuration: 3
+  doubleJumpResourceCost: 5
+  upDashResourceCost: 8
+  sideDashResourceCost: 5
+  screamResourceCost: 1
+  pressedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  pressDuration: 0.1
