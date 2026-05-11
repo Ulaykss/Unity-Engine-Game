@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: c0488b3baefb48b41946e72f1032ec66
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - abilityIcon: {instanceID: 0}
+  - config: {fileID: 11400000, guid: 8ec2c95c5049c824ea7313367773b7a7, type: 2}
+  - progressBar: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

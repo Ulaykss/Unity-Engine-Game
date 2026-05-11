@@ -85,6 +85,18 @@ public class GameConfig : ScriptableObject
     [Tooltip("Время действия затенения")]
     public float pressDuration = 0.1f;
 
+    //public int GetCostFor(AbilityType type)
+    //{
+    //    return type switch
+    //    {
+    //        AbilityType.DoubleJump => doubleJumpResourceCost,
+    //        AbilityType.UpDash => upDashResourceCost,
+    //        AbilityType.SideDash => sideDashResourceCost,
+    //        AbilityType.Scream => screamResourceCost,
+    //        _ => 0
+    //    };
+    //}
+
     public void ApplyIni(GameConfigIni ini)
     {
         // === ИГРОК ===
