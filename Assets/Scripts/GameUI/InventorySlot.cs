@@ -3,33 +3,40 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// Слот ИНВЕНТАРЯ способностей (сетка в главном меню).
-/// Отображает одну Ability ScriptableObject.
+/// Слот инвентаря способностей в главном меню.
 /// Поддерживает перетаскивание на ActiveSlotUI.
+/// 
+/// КЛЮЧЕВАЯ ДЕТАЛЬ для работы drag-n-drop:
+/// _canvasGroup.blocksRaycasts = false во время перетаскивания —
+/// иначе сам слот перекрывает IDropHandler на ActiveSlotUI.
 /// </summary>
 public class InventorySlot : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [Header("=== ДАННЫЕ ===")]
-    [Tooltip("Способность, которую отображает этот слот. Назначается вручную или через AbilitiesInventoryUI.")]
-    public Ability ability; // Назначается в инспекторе или скриптом
+    public Ability ability;
 
     [Header("=== UI ЭЛЕМЕНТЫ ===")]
     [SerializeField] private Image iconImage;
     [SerializeField] private Text nameText;
 
-    // ── Drag-n-drop внутренние переменные ──────────────────────────
+    // Ghost-иконка которая следует за курсором во время перетаскивания
+    private GameObject _dragGhost;
 
-    // Временная «призрачная» иконка, которая следует за курсором
-    private static GameObject _dragGhost;
-
-    // Canvas нужен для правильного позиционирования ghost-иконки
+    // Ссылка на корневой Canvas (нужна для позиционирования ghost)
     private Canvas _rootCanvas;
+
+    // CanvasGroup — позволяет отключать raycast у этого объекта
+    private CanvasGroup _canvasGroup;
 
     private void Awake()
     {
-        // Ищем корневой Canvas поднимаясь по иерархии
         _rootCanvas = GetComponentInParent<Canvas>();
+
+        // Добавляем CanvasGroup если его нет — он нужен для блокировки/разблокировки raycast
+        _canvasGroup = GetComponent<CanvasGroup>();
+        if (_canvasGroup == null)
+            _canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
 
     private void Start()
@@ -57,34 +64,33 @@ public class InventorySlot : MonoBehaviour,
             nameText.text = ability.abilityName;
     }
 
-    // ── IBeginDragHandler ──────────────────────────────────────────
+    // ─────────────────────────────────────────────────────────────
+    // Drag-n-Drop
+    // ─────────────────────────────────────────────────────────────
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (ability == null) return;
 
-        // Создаём ghost — полупрозрачную копию иконки, которая «летит» за курсором
-        _dragGhost = new GameObject("DragGhost");
+        // ВАЖНО: отключаем blocksRaycasts чтобы raycast "проходил сквозь" этот слот
+        // и достигал ActiveSlotUI под курсором → IDropHandler сработает
+        _canvasGroup.blocksRaycasts = false;
 
-        // Помещаем ghost в корневой Canvas, чтобы он был поверх всего
+        // Создаём ghost-иконку поверх всего UI
+        _dragGhost = new GameObject("DragGhost");
         _dragGhost.transform.SetParent(_rootCanvas.transform, false);
         _dragGhost.transform.SetAsLastSibling(); // Поверх всех элементов
 
-        // Добавляем компонент изображения
         Image ghostImage = _dragGhost.AddComponent<Image>();
         ghostImage.sprite = ability.abilityIcon;
-        ghostImage.raycastTarget = false; // Ghost не должен мешать raycast-ам
+        ghostImage.raycastTarget = false; // Ghost сам не должен перехватывать raycast
 
-        // Размер ghost = размер слота
+        // Размер ghost совпадает с размером слота
         RectTransform ghostRect = _dragGhost.GetComponent<RectTransform>();
-        RectTransform myRect = GetComponent<RectTransform>();
-        ghostRect.sizeDelta = myRect.sizeDelta;
+        ghostRect.sizeDelta = GetComponent<RectTransform>().sizeDelta;
 
-        // Ставим ghost под курсор
         UpdateGhostPosition(eventData);
     }
-
-    // ── IDragHandler ───────────────────────────────────────────────
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -92,33 +98,26 @@ public class InventorySlot : MonoBehaviour,
         UpdateGhostPosition(eventData);
     }
 
-    // ── IEndDragHandler ────────────────────────────────────────────
-
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Удаляем ghost в любом случае
+        // Возвращаем блокировку raycast
+        _canvasGroup.blocksRaycasts = true;
+
+        // Удаляем ghost
         if (_dragGhost != null)
         {
             Destroy(_dragGhost);
             _dragGhost = null;
         }
-
-        // Проверяем, над каким объектом отпустили
-        // eventData.pointerEnter — объект под курсором в момент отпускания
-        if (eventData.pointerEnter == null) return;
-
-        ActiveSlotUI activeSlot = eventData.pointerEnter.GetComponentInParent<ActiveSlotUI>();
-        if (activeSlot != null)
-        {
-            activeSlot.ReceiveDrop(ability);
-        }
     }
 
-    // ── Вспомогательные ───────────────────────────────────────────
+    // ─────────────────────────────────────────────────────────────
+    // Вспомогательное
+    // ─────────────────────────────────────────────────────────────
 
     private void UpdateGhostPosition(PointerEventData eventData)
     {
-        // Конвертируем позицию курсора (пикселы экрана) в локальные координаты Canvas
+        // Переводим экранные координаты курсора в локальные координаты Canvas
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             _rootCanvas.GetComponent<RectTransform>(),
             eventData.position,
@@ -127,5 +126,17 @@ public class InventorySlot : MonoBehaviour,
         );
 
         _dragGhost.GetComponent<RectTransform>().localPosition = localPoint;
+    }
+
+    public bool IsAbilityEquippedElsewhere(Ability ability, int currentSlotIndex)
+    {
+        if (AbilityLoadout.Instance == null) return false;
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (i != currentSlotIndex && AbilityLoadout.Instance.GetAbilityIndex(i) == ability.abilityIndex)
+                return true;
+        }
+        return false;
     }
 }

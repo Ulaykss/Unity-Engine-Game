@@ -1,16 +1,17 @@
 using UnityEngine;
 
 /// <summary>
-/// Автоматически заполняет сетку инвентаря всеми способностями по порядку (по abilityIndex).
+/// Автоматически заполняет сетку инвентаря всеми способностями по abilityIndex.
 /// Добавь этот скрипт на объект "Abilities Inventory" в MainMenu.
+/// Дочерние объекты пересоздаются при каждом открытии (это нормально).
 /// </summary>
 public class AbilitiesInventoryUI : MonoBehaviour
 {
     [Header("=== РЕСУРСЫ ===")]
-    [Tooltip("Все Ability ScriptableObject-ы. Порядок не важен — сортируем по abilityIndex.")]
+    [Tooltip("Все Ability ScriptableObject-ы. Порядок в массиве не важен — сортируем по abilityIndex.")]
     [SerializeField] private Ability[] allAbilities;
 
-    [Tooltip("Prefab одного слота инвентаря (с компонентом InventorySlot)")]
+    [Tooltip("Prefab одного слота инвентаря (объект с компонентом InventorySlot)")]
     [SerializeField] private GameObject inventorySlotPrefab;
 
     private void Start()
@@ -22,11 +23,11 @@ public class AbilitiesInventoryUI : MonoBehaviour
     {
         if (allAbilities == null || inventorySlotPrefab == null)
         {
-            Debug.LogError("AbilitiesInventoryUI: не назначены allAbilities или inventorySlotPrefab!");
+            Debug.LogError("[AbilitiesInventoryUI] Не назначены allAbilities или inventorySlotPrefab!");
             return;
         }
 
-        // Сортируем способности по abilityIndex (от меньшего к большему)
+        // Сортируем по abilityIndex по возрастанию
         System.Array.Sort(allAbilities, (a, b) =>
         {
             if (a == null) return 1;
@@ -34,19 +35,17 @@ public class AbilitiesInventoryUI : MonoBehaviour
             return a.abilityIndex.CompareTo(b.abilityIndex);
         });
 
-        // Удаляем старые дочерние объекты (если были)
+        // Удаляем старые слоты
         foreach (Transform child in transform)
-        {
             Destroy(child.gameObject);
-        }
 
-        // Создаём слот для каждой способности
+        // Создаём новые
         foreach (var ability in allAbilities)
         {
             if (ability == null) continue;
 
-            GameObject slotGO = Instantiate(inventorySlotPrefab, transform);
-            InventorySlot slot = slotGO.GetComponent<InventorySlot>();
+            GameObject go = Instantiate(inventorySlotPrefab, transform);
+            InventorySlot slot = go.GetComponent<InventorySlot>();
 
             if (slot != null)
             {
@@ -55,7 +54,7 @@ public class AbilitiesInventoryUI : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"AbilitiesInventoryUI: prefab {inventorySlotPrefab.name} не имеет компонента InventorySlot!");
+                Debug.LogError($"[AbilitiesInventoryUI] Prefab {inventorySlotPrefab.name} не имеет компонента InventorySlot!");
             }
         }
     }
