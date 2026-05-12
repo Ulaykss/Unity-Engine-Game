@@ -45,6 +45,17 @@ public class AbilityLoadout : MonoBehaviour
         SaveToPlayerPrefs();
     }
 
+    public bool IsAbilityEquipped(int abilityIndex, int excludeSlot = -1)
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (i != excludeSlot && _slots[i] == abilityIndex)
+                return true;
+        }
+        return false;
+    }
+
+
     /// <summary>Очистить слот.</summary>
     public void ClearSlot(int slotIndex)
     {

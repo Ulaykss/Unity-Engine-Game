@@ -14,12 +14,6 @@ public class ScenesManager : MonoBehaviour
         settingsPanel.SetActive(false);
     }
 
-    public void StartGame()
-    {
-        SceneManager.LoadScene("EndlessLevel");
-        Time.timeScale = 1f;
-    }
-
     public void PauseGame()
     {
         pausePanel.SetActive(true);
