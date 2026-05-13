@@ -31,13 +31,23 @@ public class PlayerController : MonoBehaviour
         return _direction;
     }
 
-    // Общий метод активации — рассылает сигнал всем слотам
-    private void ActivateSlot(int index)
+    // Активирует только целевой слот с указанным индексом
+    public void ActivateSlot(int slotIndex)
     {
+        if (slots == null || slots.Length == 0)
+            return;
+
+        // Находим слот с нужным индексом и вызываем его Activate
         foreach (var slot in slots)
         {
-            slot.Activate(index);
+            if (slot != null && slot.slotIndex == slotIndex)
+            {
+                slot.Activate(slotIndex);
+                return; // Выходим после активации
+            }
         }
+
+        Debug.LogWarning($"Slot with index {slotIndex} not found!");
     }
 
     public void OnFirstSlot(InputAction.CallbackContext context)

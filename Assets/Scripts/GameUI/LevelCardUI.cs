@@ -27,5 +27,6 @@ public class LevelCardUI : MonoBehaviour
     public void OpenLevel()
     {
         SceneManager.LoadScene(sceneName);
+        Time.timeScale = 1f;
     }
 }

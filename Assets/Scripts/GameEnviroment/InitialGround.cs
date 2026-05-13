@@ -3,22 +3,37 @@
 public class InitialGround : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private Transform player;
+    [SerializeField] private Camera mainCamera;
 
     private GameConfig config;
     private bool destroyed = false;
+    private Collider2D groundCollider;
 
     private void Awake()
     {
         config = ConfigManager.Config;
+        groundCollider = GetComponent<Collider2D>();
+    }
+
+    private void Start()
+    {
+        if (player == null)
+            player = FindObjectOfType<PlayerController>().transform;
+
+        if (mainCamera == null)
+            mainCamera = Camera.main;
     }
 
     private void Update()
     {
-        if (destroyed || scoreManager == null)
+        if (destroyed || player == null || mainCamera == null)
             return;
 
-        if (scoreManager.CurrentScoreMeters >= config.destroyHeightThreshold)
+        // Удаляем начальную земля, когда она выходит за нижнюю границу видимости
+        float cameraBottomY = mainCamera.transform.position.y - mainCamera.orthographicSize;
+
+        if (transform.position.y < cameraBottomY - 1f)
         {
             destroyed = true;
             Destroy(gameObject);

@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Scene
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -69,8 +69,8 @@ MonoBehaviour:
     y: 0
     width: 476
     height: 933
-  m_MinSize: {x: 276, y: 76}
-  m_MaxSize: {x: 4001, y: 4026}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -95,8 +95,8 @@ MonoBehaviour:
     y: 0
     width: 353
     height: 557
-  m_MinSize: {x: 201, y: 226}
-  m_MaxSize: {x: 4001, y: 4026}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -273,12 +273,12 @@ MonoBehaviour:
     height: 557
   m_MinSize: {x: 202, y: 226}
   m_MaxSize: {x: 4002, y: 4026}
-  m_ActualView: {fileID: 17}
+  m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
   - {fileID: 17}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -594,7 +594,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets/Scripts/GameUI
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -604,7 +604,7 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Scripts/GameUI
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Projects\Unity\Doodle Jump Advanced
   m_LockTracker:
@@ -613,12 +613,12 @@ MonoBehaviour:
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
     m_SelectedIDs:
-    - m_Data: 47862
+    - m_Data: 47934
     m_LastClickedID:
-      m_Data: 47862
+      m_Data: 47934
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 47756
+    - m_Data: 47754
     - m_Data: 47862
     - m_Data: 1000000000
     - m_Data: 2147483647
@@ -654,7 +654,7 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 47756
+    - m_Data: 47754
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -816,21 +816,46 @@ MonoBehaviour:
       m_LastClickedID:
         m_Data: 0
       m_ExpandedIDs:
-      - m_Data: -12342
-      - m_Data: -10872
-      - m_Data: -10620
-      - m_Data: -9090
+      - m_Data: -35082
+      - m_Data: -34764
+      - m_Data: -33934
+      - m_Data: -33654
+      - m_Data: -33260
+      - m_Data: -33014
+      - m_Data: -32712
+      - m_Data: -32466
+      - m_Data: -28610
+      - m_Data: -28292
+      - m_Data: -27462
+      - m_Data: -27182
+      - m_Data: -26786
+      - m_Data: -26540
+      - m_Data: -26238
+      - m_Data: -25992
+      - m_Data: -22292
+      - m_Data: -21974
+      - m_Data: -21134
+      - m_Data: -20844
+      - m_Data: -20452
+      - m_Data: -20196
+      - m_Data: -19876
+      - m_Data: -19620
+      - m_Data: -18260
+      - m_Data: -18004
+      - m_Data: -17684
+      - m_Data: -17428
+      - m_Data: -14732
+      - m_Data: -10796
+      - m_Data: -8542
+      - m_Data: -8174
+      - m_Data: -7810
       - m_Data: -1316
-      - m_Data: -12
-      - m_Data: 53944
-      - m_Data: 54740
-      - m_Data: 54862
-      - m_Data: 54900
-      - m_Data: 55010
-      - m_Data: 55042
-      - m_Data: 57768
-      - m_Data: 57978
-      - m_Data: 58144
+      - m_Data: 47120
+      - m_Data: 55970
+      - m_Data: 56954
+      - m_Data: 60794
+      - m_Data: 65784
+      - m_Data: 65896
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1353,9 +1378,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 1.2623864, y: -0.45522165, z: 0.037897363}
+    m_Target: {x: 0.35235423, y: -0.8241531, z: 0.037897363}
     speed: 2
-    m_Value: {x: 1.2623864, y: -0.45522165, z: 0.037897363}
+    m_Value: {x: 0.35235423, y: -0.8241531, z: 0.037897363}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
